@@ -8,10 +8,9 @@ class OptiStepperTMC2208 : public OptiStepper
 {
 public:
 	OptiStepperTMC2208(int driverActivationPin, int stepPin, int stepDirectionPin, HardwareSerial * serial, int baudRate);
+	virtual void Initialize() override;
 
 private:
-	void Initialize();
-
 	void ActivateDriver();
 	void DeactivateDriver();
 	void SetDriverActive(bool Value);

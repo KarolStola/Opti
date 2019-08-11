@@ -5,7 +5,7 @@
 
 class Opti200 : public Opti
 {
-	virtual OptiStepper CreateStepper() override;
+	virtual OptiStepper * CreateStepper() override;
 };
 
 #endif
