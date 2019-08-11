@@ -4,6 +4,7 @@
 
 #include "OptiStepper.h"
 #include "OptiLed.h"
+#include "OptiBumper.h"
 
 class Opti
 {
@@ -13,6 +14,9 @@ public:
 	void ActivateLed();
 	void DeactivateLed();
 	void SetLedActive(bool Value);
+
+	bool RightBorderReached();
+	bool LeftBorderReached();
 
 	virtual ~Opti();
 
@@ -29,15 +33,13 @@ protected:
 private:
 	OptiStepper * stepper = nullptr;
 	OptiLed * led = nullptr;
+	OptiBumper * leftBumper = nullptr;
+	OptiBumper * rightBumper = nullptr;
 	
 	virtual OptiStepper * CreateStepper() = 0;
 
 	inline int GetBumpValueThreshold() { return 5; }
 	inline int GetMotorCurrentValue() { return 1400; }
-
-	bool IsBumped(int BumperPin);
-	bool RightBorderReached();
-	bool LeftBorderReached();
 
 	void Cleanup();
 };

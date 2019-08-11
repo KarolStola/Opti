@@ -8,6 +8,12 @@ void Opti::Initialize()
 
 	stepper = CreateStepper();
 	stepper->Initialize();
+
+	leftBumper = new OptiBumper(GetLeftBumperPin());
+	leftBumper->Initialize();
+
+	rightBumper = new OptiBumper(GetRightBumperPin());
+	rightBumper->Initialize();
 }
 
 void Opti::ActivateLed()
@@ -27,17 +33,12 @@ void Opti::SetLedActive(bool value)
 
 bool Opti::RightBorderReached()
 {
-	return IsBumped(GetRightBumperPin());
+	return rightBumper->ReachedBorder();
 }
 
 bool Opti::LeftBorderReached()
 {
-	return IsBumped(GetLeftBumperPin());
-}
-
-bool Opti::IsBumped(int BumperPin)
-{
-	return analogRead(BumperPin) < GetBumpValueThreshold();
+	return leftBumper->ReachedBorder();
 }
 
 Opti::~Opti()
