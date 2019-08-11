@@ -14,7 +14,7 @@ public:
 	void DeactivateLed();
 	void SetLedActive(bool Value);
 
-	~Opti();
+	virtual ~Opti();
 
 protected:
 	static inline int GetMotorDriverActivationPin() { return 4; }

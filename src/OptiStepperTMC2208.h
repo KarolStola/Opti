@@ -21,6 +21,10 @@ private:
 	const int baudRate;
 	HardwareSerial * const serial;
 	TMC2208Stepper driver;
+
+	void Cleanup();
+
+	virtual ~OptiStepperTMC2208();
 };
 
 #endif

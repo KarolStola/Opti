@@ -42,3 +42,13 @@ void OptiStepperTMC2208::SetDriverActive(bool value)
 {
 	digitalWrite(driverActivationPin, value ? LOW : HIGH);
 }
+
+void OptiStepperTMC2208::Cleanup()
+{
+	DeactivateDriver();
+}
+
+OptiStepperTMC2208::~OptiStepperTMC2208()
+{
+	Cleanup();
+}

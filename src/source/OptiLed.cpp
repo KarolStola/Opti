@@ -26,3 +26,13 @@ void OptiLed::SetActive(bool value)
 {
     digitalWrite(ledPin, value ? HIGH : LOW);
 }
+
+void OptiLed::Cleanup()
+{
+    Deactivate();
+}
+
+OptiLed::~OptiLed()
+{
+    Cleanup();
+}

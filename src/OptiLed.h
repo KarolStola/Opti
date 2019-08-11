@@ -9,9 +9,11 @@ public:
     void Activate();
     void Deactivate();
     void SetActive(bool value);
+    virtual ~OptiLed();
 
 private:
     const int ledPin;
+    void Cleanup();
 };
 
 #endif
