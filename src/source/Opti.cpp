@@ -16,6 +16,17 @@ void Opti::Initialize()
 	rightBumper->Initialize();
 }
 
+void Opti::Update()
+{
+	leftBumper->Update();
+	rightBumper->Update();
+}
+
+bool Opti::IsMoving()
+{
+	return stepper->IsMoving();
+}
+
 void Opti::ActivateLed()
 {
 	led->Activate();
@@ -29,6 +40,16 @@ void Opti::DeactivateLed()
 void Opti::SetLedActive(bool value)
 {
 	led->SetActive(value);
+}
+
+void Opti::StartMoving()
+{
+	stepper->StartMoving();
+}
+
+void Opti::StopMoving()
+{
+	stepper->StopMoving();
 }
 
 bool Opti::RightBorderReached()

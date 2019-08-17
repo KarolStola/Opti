@@ -11,7 +11,25 @@ void OptiBumper::Initialize()
     pinMode(bumperPin, INPUT);
 }
 
+void OptiBumper::Update()
+{
+    if(IsReadoutSuggestingBump())
+    {
+        consecutiveBumpReadouts = _min(consecutiveBumpReadouts + 1, GetRequiredConsecutiveReadoutCount());
+    }
+    else
+    {
+        consecutiveBumpReadouts = 0;
+    }
+    
+}
+
 bool OptiBumper::ReachedBorder()
 {
-    return analogRead(bumperPin) < GetBumpValueThreshold();
+    return consecutiveBumpReadouts >= GetRequiredConsecutiveReadoutCount();
+}
+
+bool OptiBumper::IsReadoutSuggestingBump()
+{
+    return analogRead(bumperPin) <= GetBumpValueThreshold();
 }

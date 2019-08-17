@@ -10,14 +10,15 @@ class Opti
 {
 public:
 	void Initialize();
-
+	void Update();
 	void ActivateLed();
 	void DeactivateLed();
 	void SetLedActive(bool Value);
-
+	void StartMoving();
+	void StopMoving();
 	bool RightBorderReached();
 	bool LeftBorderReached();
-
+	bool IsMoving();
 	virtual ~Opti();
 
 protected:

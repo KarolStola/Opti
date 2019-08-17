@@ -2,6 +2,7 @@
 #define OPTI_STEPPER_TMC2208_H
 
 #include <TMC2208Stepper.h>
+#include <DelayedMemberTask.h>
 #include "OptiStepper.h"
 
 class OptiStepperTMC2208 : public OptiStepper
@@ -9,11 +10,19 @@ class OptiStepperTMC2208 : public OptiStepper
 public:
 	OptiStepperTMC2208(int driverActivationPin, int stepPin, int stepDirectionPin, HardwareSerial * serial, int baudRate);
 	virtual void Initialize() override;
+    virtual void StartMoving() override;
+    virtual void StopMoving() override;
+	virtual bool IsMoving() override;
 
 private:
 	void ActivateDriver();
 	void DeactivateDriver();
-	void SetDriverActive(bool Value);
+	void SetDriverActive(bool value);
+	void LowerStep();
+	bool GetStepPinState();
+	bool IsDriverActive();
+	int GetDriverActivationValue(bool value);
+	void StepAndDelayNext();
 	
 	const int driverActivationPin;
 	const int stepPin;
@@ -21,7 +30,7 @@ private:
 	const int baudRate;
 	HardwareSerial * const serial;
 	TMC2208Stepper driver;
-
+	
 	void Cleanup();
 
 	virtual ~OptiStepperTMC2208();
