@@ -20,6 +20,7 @@ void Opti::Update()
 {
 	leftBumper->Update();
 	rightBumper->Update();
+	stepper->Update();
 }
 
 bool Opti::IsMoving()

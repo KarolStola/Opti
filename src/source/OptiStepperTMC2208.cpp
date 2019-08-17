@@ -31,6 +31,11 @@ void OptiStepperTMC2208::Initialize()
 	driver.toff(2);               // Enable driver in software
 }
 
+void OptiStepperTMC2208::Update()
+{
+	stepTaskManager.Update();
+}
+
 bool OptiStepperTMC2208::IsMoving()
 {
 	return IsDriverActive();
@@ -50,8 +55,8 @@ void OptiStepperTMC2208::StepAndDelayNext()
 	if(IsMoving())
 	{
 		digitalWrite(stepPin, !GetStepPinState());
-		auto currentStepDelayedTask = new DelayedMemberTask<OptiStepperTMC2208>(100, this, & OptiStepperTMC2208::StepAndDelayNext);
-		DelayedTaskManager::Get().AddDelayedTask(currentStepDelayedTask);
+		auto currentStepDelayedTask = new DelayedMemberTask<OptiStepperTMC2208>(50, this, & OptiStepperTMC2208::StepAndDelayNext);
+		stepTaskManager.AddDelayedTask(currentStepDelayedTask);
 	}
 }
 
@@ -61,6 +66,7 @@ void OptiStepperTMC2208::StopMoving()
 	if(IsMoving())
 	{
 		DeactivateDriver();
+		stepTaskManager.Clear();
 	}
 }
 
