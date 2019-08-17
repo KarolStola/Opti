@@ -53,6 +53,12 @@ void Opti::StopMoving()
 	stepper->StopMoving();
 }
 
+void Opti::SetMovementDirection(MovementDirection direction)
+{
+	stepper->SetMovementDirection(direction);
+}
+
+
 bool Opti::RightBorderReached()
 {
 	return rightBumper->ReachedBorder();

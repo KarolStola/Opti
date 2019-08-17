@@ -5,6 +5,7 @@
 #include "OptiStepper.h"
 #include "OptiLed.h"
 #include "OptiBumper.h"
+#include "MovementDirection.h"
 
 class Opti
 {
@@ -16,6 +17,7 @@ public:
 	void SetLedActive(bool Value);
 	void StartMoving();
 	void StopMoving();
+	void SetMovementDirection(MovementDirection direction);
 	bool RightBorderReached();
 	bool LeftBorderReached();
 	bool IsMoving();

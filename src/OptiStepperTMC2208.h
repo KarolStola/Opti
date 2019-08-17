@@ -14,6 +14,7 @@ public:
     virtual void Update() override;
 	virtual void StartMoving() override;
     virtual void StopMoving() override;
+	void SetMovementDirection(MovementDirection direction) override;
 	virtual bool IsMoving() override;
 
 private:
@@ -25,6 +26,7 @@ private:
 	bool IsDriverActive();
 	int GetDriverActivationValue(bool value);
 	void StepAndDelayNext();
+	int GetPinValueForMovementDirection(MovementDirection MovementDirection);
 	
 	const int driverActivationPin;
 	const int stepPin;

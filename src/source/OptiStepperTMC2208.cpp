@@ -21,6 +21,7 @@ void OptiStepperTMC2208::Initialize()
 
 	pinMode(driverActivationPin, OUTPUT);
 	pinMode(stepPin, OUTPUT);
+	pinMode(stepDirectionPin, OUTPUT);
 	
 	DeactivateDriver();
 
@@ -68,6 +69,16 @@ void OptiStepperTMC2208::StopMoving()
 		DeactivateDriver();
 		stepTaskManager.Clear();
 	}
+}
+
+void OptiStepperTMC2208::SetMovementDirection(MovementDirection direction)
+{
+	digitalWrite(stepDirectionPin, GetPinValueForMovementDirection(direction));
+}
+
+int  OptiStepperTMC2208::GetPinValueForMovementDirection(MovementDirection direction)
+{
+	return direction == MovementDirection::Left ? LOW : HIGH;
 }
 
 
