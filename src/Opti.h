@@ -40,10 +40,8 @@ private:
 	OptiBumper * rightBumper = nullptr;
 	
 	virtual OptiStepper * CreateStepper() = 0;
-
 	inline int GetBumpValueThreshold() { return 5; }
 	inline int GetMotorCurrentValue() { return 1400; }
-
 	void Cleanup();
 };
 
