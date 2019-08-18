@@ -1,10 +1,10 @@
 #include <Arduino.h>
 #include "Opti.h"
 
-void Opti::Initialize()
+void Opti::Initialize(HardwareSerial * StepperSerial)
 {
 	led = new OptiLed(GetLedPin());
-	stepper = CreateStepper();
+	stepper = CreateStepper(StepperSerial);
 	leftBumper = new OptiBumper(GetLeftBumperPin());
 	rightBumper = new OptiBumper(GetRightBumperPin());
 }

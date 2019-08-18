@@ -10,7 +10,7 @@
 class Opti
 {
 public:
-	void Initialize();
+	void Initialize(class HardwareSerial * StepperSerial);
 	void Update();
 	void ActivateLed();
 	void DeactivateLed();
@@ -39,7 +39,7 @@ private:
 	OptiBumper * leftBumper = nullptr;
 	OptiBumper * rightBumper = nullptr;
 	
-	virtual OptiStepper * CreateStepper() = 0;
+	virtual OptiStepper * CreateStepper(class HardwareSerial * StepperSerial) = 0;
 	inline int GetBumpValueThreshold() { return 5; }
 	inline int GetMotorCurrentValue() { return 1400; }
 	void Cleanup();

@@ -5,7 +5,8 @@
 
 class Opti200 : public Opti
 {
-	virtual OptiStepper * CreateStepper() override;
+protected:
+	virtual OptiStepper * CreateStepper(class HardwareSerial * StepperSerial) override;
 };
 
 #endif
