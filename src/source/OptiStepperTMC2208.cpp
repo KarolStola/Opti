@@ -12,6 +12,7 @@ OptiStepperTMC2208::OptiStepperTMC2208(int driverActivationPin, int stepPin, int
 	, serial(serial)
 	, driver(TMC2208Stepper(serial))
 {
+	Initialize();
 }
 
 void OptiStepperTMC2208::Initialize()

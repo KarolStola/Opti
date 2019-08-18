@@ -4,6 +4,7 @@
 OptiBumper::OptiBumper(int bumperPin)
     : bumperPin(bumperPin)
 {
+    Initialize();
 }
 
 void OptiBumper::Initialize()

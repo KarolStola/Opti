@@ -4,16 +4,9 @@
 void Opti::Initialize()
 {
 	led = new OptiLed(GetLedPin());
-	led->Initialize();
-
 	stepper = CreateStepper();
-	stepper->Initialize();
-
 	leftBumper = new OptiBumper(GetLeftBumperPin());
-	leftBumper->Initialize();
-
 	rightBumper = new OptiBumper(GetRightBumperPin());
-	rightBumper->Initialize();
 }
 
 void Opti::Update()

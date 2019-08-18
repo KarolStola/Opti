@@ -4,6 +4,7 @@
 OptiLed::OptiLed(int ledPin)
     : ledPin(ledPin)
 {
+    Initialize();
 }
 
 void OptiLed::Initialize()
