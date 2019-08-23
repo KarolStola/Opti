@@ -6,6 +6,7 @@
 class Opti200 : public Opti
 {
 protected:
+	virtual const std::string & GetDeviceName()  override;
 	virtual OptiStepper * CreateStepper(class HardwareSerial * StepperSerial) override;
 };
 

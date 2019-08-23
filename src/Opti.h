@@ -2,15 +2,24 @@
 #ifndef OPTI_H
 #define OPTI_H
 
+#include <Arduino.h>
 #include "OptiStepper.h"
 #include "OptiLed.h"
 #include "OptiBumper.h"
+#include "OptiBluetooth.h"
 #include "MovementDirection.h"
 
 class Opti
 {
 public:
-	void Initialize(class HardwareSerial * StepperSerial);
+	// See the following for generating UUIDs:
+    // https://www.uuidgenerator.net/
+	void Initialize
+	(
+		class HardwareSerial * StepperSerial,
+		const std::string  bluetoothServiceUuid,
+		const std::string  bluetoothCharacteristicUuid
+	);
 	void Update();
 	void ActivateLed();
 	void DeactivateLed();
@@ -24,24 +33,25 @@ public:
 	virtual ~Opti();
 
 protected:
-	static inline int GetMotorDriverActivationPin() { return 4; }
-	static inline int GetMotorStepPin() { return 16; }
-	static inline int GetMotorDirectionPin() { return 17; }
-	static inline int GetLedPin() { return 2; }
-	static inline int GetShutterReleasePin() { return 15; }
-	static inline int GetLeftBumperPin() { return 32; }
-	static inline int GetRightBumperPin() { return 33; }
-	static inline int GetBatteryStatusPin() { return 35; }
+	inline int GetMotorDriverActivationPin() { return 4; }
+	inline int GetMotorStepPin() { return 16; }
+	inline int GetMotorDirectionPin() { return 17; }
+	inline int GetLedPin() { return 2; }
+	inline int GetShutterReleasePin() { return 15; }
+	inline int GetLeftBumperPin() { return 32; }
+	inline int GetRightBumperPin() { return 33; }
+	inline int GetBatteryStatusPin() { return 35; }
+	virtual const std::string & GetDeviceName() = 0; 
 
 private:
+
 	OptiStepper * stepper = nullptr;
 	OptiLed * led = nullptr;
 	OptiBumper * leftBumper = nullptr;
 	OptiBumper * rightBumper = nullptr;
+	OptiBluetooth * bluetooth = nullptr;
 	
 	virtual OptiStepper * CreateStepper(class HardwareSerial * StepperSerial) = 0;
-	inline int GetBumpValueThreshold() { return 5; }
-	inline int GetMotorCurrentValue() { return 1400; }
 	void Cleanup();
 };
 
