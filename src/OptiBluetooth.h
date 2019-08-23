@@ -14,7 +14,7 @@ private:
     void Initialize();
     
     std::string deviceName;
-    BluetoothSerial serial;    
+    BluetoothSerial bluetoothSerial;    
 };
 
 #endif

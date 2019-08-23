@@ -8,15 +8,15 @@ OptiBluetooth::OptiBluetooth(const std::string & deviceName)
 
 void OptiBluetooth::Initialize()
 {
-    serial.begin(deviceName.c_str());
+    bluetoothSerial.begin(deviceName.c_str());
 }
 
 void OptiBluetooth::Update()
 {
     String inputFromOtherSide;
-  	if (serial.available())
+  	if (bluetoothSerial.available())
 	{
-    	inputFromOtherSide = serial.readString();
+    	inputFromOtherSide = bluetoothSerial.readString();
     	Serial.println("You had entered: ");
     	Serial.println(inputFromOtherSide);
   	}
