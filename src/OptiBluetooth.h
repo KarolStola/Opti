@@ -2,31 +2,19 @@
 #define OPTI_BLUETOOTH_H
 
 #include <Arduino.h>
-#include <BLEDevice.h>
+#include <BluetoothSerial.h>
 
 class OptiBluetooth
 {
 public:
-    // See the following for generating UUIDs:
-    // https://www.uuidgenerator.net/
-    OptiBluetooth
-    (
-        const std::string & deviceName,
-        const std::string & serviceUuid,
-        const std::string & characteristicUuid
-    );
+    OptiBluetooth(const std::string & deviceName);
+    void Update();
 
 private:
     void Initialize();
     
-    const std::string deviceName;
-    const std::string serviceUuid;
-    const std::string characteristicUuid;
-    BLEServer * server;
-    BLEService * service;
-    BLECharacteristic * characteristic;
-    BLEAdvertising * advertising;
-    class OptiBluetoothCharacteristicCallbacks * callbacks;
+    std::string deviceName;
+    BluetoothSerial serial;    
 };
 
 #endif

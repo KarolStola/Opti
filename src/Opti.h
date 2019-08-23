@@ -12,14 +12,7 @@
 class Opti
 {
 public:
-	// See the following for generating UUIDs:
-    // https://www.uuidgenerator.net/
-	void Initialize
-	(
-		class HardwareSerial * StepperSerial,
-		const std::string  bluetoothServiceUuid,
-		const std::string  bluetoothCharacteristicUuid
-	);
+	void Initialize(class HardwareSerial * StepperSerial);
 	void Update();
 	void ActivateLed();
 	void DeactivateLed();

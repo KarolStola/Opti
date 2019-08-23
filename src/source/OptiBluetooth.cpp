@@ -1,32 +1,24 @@
 #include "OptiBluetooth.h"
-#include "OptiBluetoothCharacteristicCallbacks.h"
 
-OptiBluetooth::OptiBluetooth
-(
-    const std::string & deviceName,
-    const std::string & serviceUuid,
-    const std::string & characteristicUuid
-)
+OptiBluetooth::OptiBluetooth(const std::string & deviceName)
     : deviceName(deviceName)
-    , serviceUuid(serviceUuid)
-    , characteristicUuid(characteristicUuid)
 {
     Initialize();
 }
 
 void OptiBluetooth::Initialize()
 {
-    BLEDevice::init(deviceName);
-    server = BLEDevice::createServer();    
-    service = server->createService(serviceUuid);
-    characteristic = service->createCharacteristic
-        (
-            characteristicUuid,
-            BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE
-        );
-    callbacks = new OptiBluetoothCharacteristicCallbacks();
-    characteristic->setCallbacks(callbacks);
-    service->start();
-    advertising = server->getAdvertising();
-    advertising->start();
+    serial.begin(deviceName.c_str());
 }
+
+void OptiBluetooth::Update()
+{
+    String inputFromOtherSide;
+  	if (serial.available())
+	{
+    	inputFromOtherSide = serial.readString();
+    	Serial.println("You had entered: ");
+    	Serial.println(inputFromOtherSide);
+  	}
+}
+

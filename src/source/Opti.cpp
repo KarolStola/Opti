@@ -1,18 +1,13 @@
 #include <Arduino.h>
 #include "Opti.h"
 
-void Opti::Initialize
-(
-	HardwareSerial * StepperSerial,
-	const std::string  bluetoothServiceUuid,
-	const std::string  bluetoothCharacteristicUuid
-)
+void Opti::Initialize(HardwareSerial * StepperSerial)
 {
 	led = new OptiLed(GetLedPin());
 	stepper = CreateStepper(StepperSerial);
 	leftBumper = new OptiBumper(GetLeftBumperPin());
 	rightBumper = new OptiBumper(GetRightBumperPin());
-	bluetooth = new OptiBluetooth(GetDeviceName(), bluetoothServiceUuid, bluetoothCharacteristicUuid);
+	bluetooth = new OptiBluetooth(GetDeviceName());
 }
 
 void Opti::Update()
@@ -20,6 +15,7 @@ void Opti::Update()
 	leftBumper->Update();
 	rightBumper->Update();
 	stepper->Update();
+	bluetooth->Update();
 }
 
 bool Opti::IsMoving()
