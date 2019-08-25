@@ -13,6 +13,8 @@ class Opti
 {
 public:
 	void Initialize(class HardwareSerial * StepperSerial);
+	void AddBluetoothMessageHandler(class BluetoothMessageHandler * messageHandler);
+	void SendBluetoothMessage(const String & message);
 	void Update();
 	void ActivateLed();
 	void DeactivateLed();

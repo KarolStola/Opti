@@ -9,12 +9,19 @@ class OptiBluetooth
 public:
     OptiBluetooth(const std::string & deviceName);
     void Update();
+    void AddMessageHandler(class BluetoothMessageHandler * handler);
+    void SendMessage(const String & message);
+    virtual ~OptiBluetooth();
 
 private:
     void Initialize();
-    
+    void HandleMessage(const String & message);
+
     std::string deviceName;
-    BluetoothSerial bluetoothSerial;    
+    BluetoothSerial bluetoothSerial;
+    std::vector<class BluetoothMessageHandler *> messageHandlers;
+
+    void Cleanup();
 };
 
 #endif

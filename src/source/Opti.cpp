@@ -18,6 +18,16 @@ void Opti::Update()
 	bluetooth->Update();
 }
 
+void Opti::AddBluetoothMessageHandler(class BluetoothMessageHandler * messageHandler)
+{
+	bluetooth->AddMessageHandler(messageHandler);
+}
+
+void Opti::SendBluetoothMessage(const String & message)
+{
+	bluetooth->SendMessage(message);
+}
+
 bool Opti::IsMoving()
 {
 	return stepper->IsMoving();
