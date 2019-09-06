@@ -4,7 +4,6 @@
 OptiBluetooth::OptiBluetooth(const std::string & deviceName)
     : deviceName(deviceName)
 {
-    Initialize();
 }
 
 void OptiBluetooth::Initialize()

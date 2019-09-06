@@ -12,7 +12,7 @@
 class Opti
 {
 public:
-	void Initialize(class HardwareSerial * StepperSerial);
+	void Initialize();
 	void AddBluetoothMessageHandler(class BluetoothMessageHandler * messageHandler);
 	void SendBluetoothMessage(const String & message);
 	void Update();
@@ -25,7 +25,6 @@ public:
 	bool RightBorderReached();
 	bool LeftBorderReached();
 	bool IsMoving();
-	virtual ~Opti();
 
 protected:
 	inline int GetMotorDriverActivationPin() { return 4; }
@@ -37,17 +36,12 @@ protected:
 	inline int GetRightBumperPin() { return 33; }
 	inline int GetBatteryStatusPin() { return 35; }
 	virtual const std::string & GetDeviceName() = 0; 
-
-private:
-
-	OptiStepper * stepper = nullptr;
-	OptiLed * led = nullptr;
-	OptiBumper * leftBumper = nullptr;
-	OptiBumper * rightBumper = nullptr;
-	OptiBluetooth * bluetooth = nullptr;
+	virtual OptiStepper & GetStepper() = 0;
+	virtual OptiLed & GetLed() = 0;
+	virtual OptiBumper & GetLeftBumper() = 0;
+	virtual OptiBumper & GetRightBumper() = 0;
+	virtual OptiBluetooth & GetBluetooth() = 0;
 	
-	virtual OptiStepper * CreateStepper(class HardwareSerial * StepperSerial) = 0;
-	void Cleanup();
 };
 
 #endif

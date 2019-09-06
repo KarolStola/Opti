@@ -9,15 +9,16 @@
 class OptiStepperTMC2208 : public OptiStepper
 {
 public:
-	OptiStepperTMC2208(int driverActivationPin, int stepPin, int stepDirectionPin, HardwareSerial * serial, int baudRate);
+	OptiStepperTMC2208(int driverActivationPin, int stepPin, int stepDirectionPin, HardwareSerial & serial, int baudRate);
+	virtual void Initialize() override;
     virtual void Update() override;
 	virtual void StartMoving() override;
     virtual void StopMoving() override;
 	void SetMovementDirection(MovementDirection direction) override;
 	virtual bool IsMoving() override;
+	virtual ~OptiStepperTMC2208();
 
 private:
-	void Initialize();
 	void ActivateDriver();
 	void DeactivateDriver();
 	void SetDriverActive(bool value);
@@ -32,13 +33,11 @@ private:
 	const int stepPin;
 	const int stepDirectionPin;
 	const int baudRate;
-	HardwareSerial * const serial;
+	HardwareSerial & serial;
 	TMC2208Stepper driver;
 	DelayedTaskManager stepTaskManager;
 	
 	void Cleanup();
-
-	virtual ~OptiStepperTMC2208();
 };
 
 #endif

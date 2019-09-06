@@ -1,89 +1,75 @@
 #include <Arduino.h>
 #include "Opti.h"
 
-void Opti::Initialize(HardwareSerial * StepperSerial)
+void Opti::Initialize()
 {
-	led = new OptiLed(GetLedPin());
-	stepper = CreateStepper(StepperSerial);
-	leftBumper = new OptiBumper(GetLeftBumperPin());
-	rightBumper = new OptiBumper(GetRightBumperPin());
-	bluetooth = new OptiBluetooth(GetDeviceName());
+	GetStepper().Initialize();
+	GetLed().Initialize();
+	GetLeftBumper().Initialize();
+	GetRightBumper().Initialize();
+	GetBluetooth().Initialize();
 }
+
 
 void Opti::Update()
 {
-	leftBumper->Update();
-	rightBumper->Update();
-	stepper->Update();
-	bluetooth->Update();
+	GetLeftBumper().Update();
+	GetRightBumper().Update();
+	GetStepper().Update();
+	GetBluetooth().Update();
 }
 
 void Opti::AddBluetoothMessageHandler(class BluetoothMessageHandler * messageHandler)
 {
-	bluetooth->AddMessageHandler(messageHandler);
+	GetBluetooth().AddMessageHandler(messageHandler);
 }
 
 void Opti::SendBluetoothMessage(const String & message)
 {
-	bluetooth->SendMessage(message);
+	GetBluetooth().SendMessage(message);
 }
 
 bool Opti::IsMoving()
 {
-	return stepper->IsMoving();
+	return GetStepper().IsMoving();
 }
 
 void Opti::ActivateLed()
 {
-	led->Activate();
+	GetLed().Activate();
 }
 
 void Opti::DeactivateLed()
 {
-	led->Deactivate();
+	GetLed().Deactivate();
 }
 
 void Opti::SetLedActive(bool value)
 {
-	led->SetActive(value);
+	GetLed().SetActive(value);
 }
 
 void Opti::StartMoving()
 {
-	stepper->StartMoving();
+	GetStepper().StartMoving();
 }
 
 void Opti::StopMoving()
 {
-	stepper->StopMoving();
+	GetStepper().StopMoving();
 }
 
 void Opti::SetMovementDirection(MovementDirection direction)
 {
-	stepper->SetMovementDirection(direction);
+	GetStepper().SetMovementDirection(direction);
 }
-
 
 bool Opti::RightBorderReached()
 {
-	return rightBumper->ReachedBorder();
+	return GetRightBumper().ReachedBorder();
 }
 
 bool Opti::LeftBorderReached()
 {
-	return leftBumper->ReachedBorder();
-}
-
-Opti::~Opti()
-{
-	Cleanup();
-}
-
-void Opti::Cleanup()
-{
-	delete(led);
-	delete(stepper);
-	delete(leftBumper);
-	delete(rightBumper);
-	delete(bluetooth);
+	return GetLeftBumper().ReachedBorder();
 }

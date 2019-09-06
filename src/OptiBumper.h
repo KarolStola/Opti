@@ -5,12 +5,11 @@ class OptiBumper
 {
 public:
     OptiBumper(int bumperPin);
-    
+    void Initialize();    
     void Update();
     bool ReachedBorder();
 
 private:
-    void Initialize();
     inline int GetBumpValueThreshold() { return 1; }
     inline unsigned int GetRequiredConsecutiveReadoutCount() { return 10; }
     bool IsReadoutSuggestingBump();

@@ -5,6 +5,7 @@ class OptiLed
 {
 public:
     OptiLed(int ledPin);
+    void Initialize();
     void Activate();
     void Deactivate();
     void SetActive(bool value);
@@ -13,7 +14,6 @@ public:
 private:
     const int ledPin;
     
-    void Initialize();
     void Cleanup();
 };
 

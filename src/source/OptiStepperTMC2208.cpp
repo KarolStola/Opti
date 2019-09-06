@@ -4,20 +4,19 @@
 #include <DelayedTaskManager.h>
 #include "OptiStepperTMC2208.h"
 
-OptiStepperTMC2208::OptiStepperTMC2208(int driverActivationPin, int stepPin, int stepDirectionPin, HardwareSerial * serial, int baudRate)
+OptiStepperTMC2208::OptiStepperTMC2208(int driverActivationPin, int stepPin, int stepDirectionPin, HardwareSerial & serial, int baudRate)
 	: driverActivationPin(driverActivationPin)
 	, stepPin(stepPin)
 	, stepDirectionPin(stepDirectionPin)
 	, baudRate(baudRate)
 	, serial(serial)
-	, driver(TMC2208Stepper(serial))
+	, driver(TMC2208Stepper(&serial))
 {
-	Initialize();
 }
 
 void OptiStepperTMC2208::Initialize()
 {
-	serial->begin(baudRate);
+	serial.begin(baudRate);
 	driver.push();                // Reset registers
 
 	pinMode(driverActivationPin, OUTPUT);

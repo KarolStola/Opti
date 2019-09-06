@@ -6,6 +6,7 @@
 class OptiStepper
 {
 public:
+    virtual void Initialize() = 0;
     virtual void Update() = 0;
     virtual void StartMoving() = 0;
     virtual void StopMoving() = 0;
