@@ -27,6 +27,7 @@ public:
 	bool IsCalibrated();
 	bool IsCalibrating();
 	MovementDirection GetMovementDirection();
+	long GetCurrentStep(int motorIndex = 0);
 
 protected:
 	inline int GetMotorDriverActivationPin() { return 4; }

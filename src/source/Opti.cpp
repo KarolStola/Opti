@@ -149,3 +149,9 @@ bool Opti::IsCalibrating()
 	return false;
 }
 
+long Opti::GetCurrentStep(int motorIndex)
+{
+	return GetStepper().GetCurrentStep();
+}
+
+
