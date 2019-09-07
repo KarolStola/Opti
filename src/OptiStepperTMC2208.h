@@ -21,6 +21,7 @@ public:
 	virtual void ResetCurrentStep() override;
     virtual void SetCurrentStep(long newStep) override;
 	virtual long GetCurrentStep() override;
+    virtual void SetStepsPerSecond(float stepsPerSecond) override;
 	virtual ~OptiStepperTMC2208();
 
 private:
@@ -43,6 +44,7 @@ private:
 	TMC2208Stepper driver;
 	DelayedTaskManager stepTaskManager;
 	long currentStep = 0;
+	float microsecondsBetweenSteps = 50.f;
 };
 
 #endif

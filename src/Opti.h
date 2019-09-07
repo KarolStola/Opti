@@ -32,6 +32,7 @@ public:
 	long GetCurrentStep(int motorIndex);
 	void ResetCurrentStep(int motorIndex);
 	void SetCurrentStep(int motorIndex, long currentStep);
+	void SetStepsPerSecond(int motorIndex, float stepsPerSecond);
 
 protected:
 	inline int GetMotorDriverActivationPin() { return 4; }

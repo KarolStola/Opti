@@ -174,3 +174,9 @@ void Opti::SetCurrentStep(int motorIndex, long currentStep)
 	GetStepper().SetCurrentStep(currentStep);
 }
 
+void Opti::SetStepsPerSecond(int motorIndex, float stepsPerSecond)
+{
+	GetStepper().SetStepsPerSecond(stepsPerSecond);
+}
+
+

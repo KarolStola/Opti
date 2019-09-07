@@ -60,7 +60,7 @@ void OptiStepperTMC2208::StepAndDelayNext()
 
 		auto currentStepDelayedTask = new DelayedMemberTask<OptiStepperTMC2208>
 		(
-			50,
+			microsecondsBetweenSteps,
 			DelayedTaskTimeResolution::Microseconds,
 			this, 
 			& OptiStepperTMC2208::StepAndDelayNext
@@ -115,6 +115,11 @@ void OptiStepperTMC2208::SetCurrentStep(long newStep)
 long OptiStepperTMC2208::GetCurrentStep()
 {
 	return currentStep;
+}
+
+void OptiStepperTMC2208::SetStepsPerSecond(float stepsPerSecond)
+{
+	microsecondsBetweenSteps = 1000000.f / stepsPerSecond;
 }
 
 void OptiStepperTMC2208::ActivateDriver()
