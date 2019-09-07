@@ -22,9 +22,13 @@ public:
     virtual void SetCurrentStep(long newStep) override;
 	virtual long GetCurrentStep() override;
     virtual void SetStepsPerSecond(float stepsPerSecond) override;
+    virtual void MoveTo(long stap) override;
 	virtual ~OptiStepperTMC2208();
 
 private:
+	void PerformStep();
+	void IncrementCurrentStep();
+	void DelayNextStep(); 
 	void ActivateDriver();
 	void DeactivateDriver();
 	void SetDriverActive(bool value);
@@ -35,7 +39,12 @@ private:
 	void StepAndDelayNext();
 	int GetPinValueForMovementDirection(MovementDirection MovementDirection);
 	void Cleanup();
-	
+	bool HasValidDestination();
+	bool IsAtDestination();
+	void InvalidateDestination();
+	void SetMovementDirectionTowards(long step);
+
+	static constexpr long invalidDestination = -2147483648;
 	const int driverActivationPin;
 	const int stepPin;
 	const int stepDirectionPin;
@@ -45,6 +54,7 @@ private:
 	DelayedTaskManager stepTaskManager;
 	long currentStep = 0;
 	float microsecondsBetweenSteps = 50.f;
+	long destination = invalidDestination;
 };
 
 #endif

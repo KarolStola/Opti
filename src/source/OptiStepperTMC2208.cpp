@@ -34,6 +34,10 @@ void OptiStepperTMC2208::Initialize()
 
 void OptiStepperTMC2208::Update()
 {
+	if(IsMoving() && IsAtDestination())
+	{
+		StopMoving();
+	}
 	stepTaskManager.Update();
 }
 
@@ -55,28 +59,40 @@ void OptiStepperTMC2208::StepAndDelayNext()
 {
 	if(IsMoving())
 	{
-		digitalWrite(stepPin, !GetStepPinState());
-		currentStep += GetMovementDirection() == MovementDirection::Right ? 1 : -1;
-
-		auto currentStepDelayedTask = new DelayedMemberTask<OptiStepperTMC2208>
-		(
-			microsecondsBetweenSteps,
-			DelayedTaskTimeResolution::Microseconds,
-			this, 
-			& OptiStepperTMC2208::StepAndDelayNext
-		);
-		
-		stepTaskManager.AddDelayedTask(currentStepDelayedTask);
+		PerformStep();
+		DelayNextStep();	
 	}
+}
+
+void OptiStepperTMC2208::PerformStep()
+{
+	digitalWrite(stepPin, !GetStepPinState());
+	IncrementCurrentStep();
+}
+
+void OptiStepperTMC2208::IncrementCurrentStep()
+{
+	currentStep += GetMovementDirection() == MovementDirection::Right ? 1 : -1;
+} 
+
+void OptiStepperTMC2208::DelayNextStep()
+{
+	auto currentStepDelayedTask = new DelayedMemberTask<OptiStepperTMC2208>
+	(
+		microsecondsBetweenSteps,
+		DelayedTaskTimeResolution::Microseconds,
+		this, 
+		& OptiStepperTMC2208::StepAndDelayNext
+	);
+	
+	stepTaskManager.AddDelayedTask(currentStepDelayedTask);
 }
 
 void OptiStepperTMC2208::StopMoving()
 {
-	if(IsMoving())
-	{
-		DeactivateDriver();
-		stepTaskManager.Clear();
-	}
+	InvalidateDestination();
+	DeactivateDriver();
+	stepTaskManager.Clear();
 }
 
 void OptiStepperTMC2208::SetMovementDirection(MovementDirection direction)
@@ -150,6 +166,37 @@ bool OptiStepperTMC2208::IsDriverActive()
 bool OptiStepperTMC2208::GetStepPinState()
 {
 	return digitalRead(stepPin);
+}
+
+bool OptiStepperTMC2208::HasValidDestination()
+{
+	return destination != invalidDestination;
+}
+
+void OptiStepperTMC2208::MoveTo(long step)
+{
+	if(step != GetCurrentStep())
+	{
+		destination = step;
+		SetMovementDirectionTowards(destination);
+		StartMoving();
+	}
+}
+
+void OptiStepperTMC2208::SetMovementDirectionTowards(long step)
+{
+	auto direction = step < GetCurrentStep() ? MovementDirection::Left : MovementDirection::Right;
+	SetMovementDirection(direction);
+}
+
+bool OptiStepperTMC2208::IsAtDestination()
+{
+	return HasValidDestination() && GetCurrentStep() == destination;
+}
+
+void OptiStepperTMC2208::InvalidateDestination()
+{
+	destination = invalidDestination;
 }
 
 void OptiStepperTMC2208::Cleanup()

@@ -179,4 +179,8 @@ void Opti::SetStepsPerSecond(int motorIndex, float stepsPerSecond)
 	GetStepper().SetStepsPerSecond(stepsPerSecond);
 }
 
+void Opti::MoveTo(int motorIndex, long step)
+{
+	GetStepper().MoveTo(step);
+}
 

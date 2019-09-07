@@ -18,6 +18,7 @@ public:
     virtual void SetCurrentStep(long newStep) = 0;
     virtual long GetCurrentStep() = 0;
     virtual void SetStepsPerSecond(float stepsPerSecond) = 0;
+    virtual void MoveTo(long step) = 0;
 };
 
 #endif
