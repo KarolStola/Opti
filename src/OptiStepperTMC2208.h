@@ -17,7 +17,9 @@ public:
 	void SetMovementDirection(MovementDirection direction) override;
 	virtual bool IsMoving() override;
     virtual MovementDirection GetMovementDirection() override;
-    virtual int GetStepPinReadout() override;	
+    virtual int GetStepPinReadout() override;
+	virtual void ResetCurrentStep() override;
+	virtual long GetCurrentStep() override;
 	virtual ~OptiStepperTMC2208();
 
 private:
@@ -30,6 +32,7 @@ private:
 	int GetDriverActivationValue(bool value);
 	void StepAndDelayNext();
 	int GetPinValueForMovementDirection(MovementDirection MovementDirection);
+	void Cleanup();
 	
 	const int driverActivationPin;
 	const int stepPin;
@@ -38,8 +41,7 @@ private:
 	HardwareSerial & serial;
 	TMC2208Stepper driver;
 	DelayedTaskManager stepTaskManager;
-	
-	void Cleanup();
+	long currentStep = 0;
 };
 
 #endif

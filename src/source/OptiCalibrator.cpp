@@ -71,4 +71,5 @@ bool OptiCalibrator::IsCalibrated()
 void OptiCalibrator::EndCalibration()
 {
     isCalibrating = false;
+    calibratedStepper.ResetCurrentStep();
 }

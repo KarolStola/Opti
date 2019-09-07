@@ -56,6 +56,8 @@ void OptiStepperTMC2208::StepAndDelayNext()
 	if(IsMoving())
 	{
 		digitalWrite(stepPin, !GetStepPinState());
+		currentStep += GetMovementDirection() == MovementDirection::Right ? 1 : -1;
+
 		auto currentStepDelayedTask = new DelayedMemberTask<OptiStepperTMC2208>
 		(
 			50,
@@ -63,6 +65,7 @@ void OptiStepperTMC2208::StepAndDelayNext()
 			this, 
 			& OptiStepperTMC2208::StepAndDelayNext
 		);
+		
 		stepTaskManager.AddDelayedTask(currentStepDelayedTask);
 	}
 }
@@ -98,6 +101,16 @@ int  OptiStepperTMC2208::GetPinValueForMovementDirection(MovementDirection direc
 int OptiStepperTMC2208::GetStepPinReadout()
 {
 	return digitalRead(stepPin);
+}
+
+void OptiStepperTMC2208::ResetCurrentStep()
+{
+	currentStep = 0;
+}
+
+long OptiStepperTMC2208::GetCurrentStep()
+{
+	return currentStep;
 }
 
 void OptiStepperTMC2208::ActivateDriver()
