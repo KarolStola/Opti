@@ -113,6 +113,11 @@ void Opti::StopMoving()
 	}
 }
 
+void Opti::StopMoving(int motorIndex)
+{
+	StopMoving();
+}
+
 void Opti::SetMovementDirection(MovementDirection direction)
 {
 	if(!IsCalibrating())
@@ -149,9 +154,23 @@ bool Opti::IsCalibrating()
 	return false;
 }
 
-long Opti::GetCurrentStep(int motorIndex)
+long Opti::GetCurrentStep()
 {
 	return GetStepper().GetCurrentStep();
 }
 
+long Opti::GetCurrentStep(int motorIndex)
+{
+	return GetCurrentStep();
+}
+
+void Opti::ResetCurrentStep(int motorIndex)
+{
+	GetStepper().ResetCurrentStep();
+}
+
+void Opti::SetCurrentStep(int motorIndex, long currentStep)
+{
+	GetStepper().SetCurrentStep(currentStep);
+}
 

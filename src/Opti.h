@@ -18,6 +18,7 @@ public:
 	void SetLedActive(bool Value);
 	void StartMoving();
 	void StopMoving();
+	void StopMoving(int motorIndex);
 	void ForceStopMoving();
 	void SetMovementDirection(MovementDirection direction);
 	bool ShouldPerformSafeguardStop();
@@ -27,7 +28,10 @@ public:
 	bool IsCalibrated();
 	bool IsCalibrating();
 	MovementDirection GetMovementDirection();
-	long GetCurrentStep(int motorIndex = 0);
+	long GetCurrentStep();
+	long GetCurrentStep(int motorIndex);
+	void ResetCurrentStep(int motorIndex);
+	void SetCurrentStep(int motorIndex, long currentStep);
 
 protected:
 	inline int GetMotorDriverActivationPin() { return 4; }

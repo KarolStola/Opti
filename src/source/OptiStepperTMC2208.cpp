@@ -70,7 +70,6 @@ void OptiStepperTMC2208::StepAndDelayNext()
 	}
 }
 
-
 void OptiStepperTMC2208::StopMoving()
 {
 	if(IsMoving())
@@ -105,7 +104,12 @@ int OptiStepperTMC2208::GetStepPinReadout()
 
 void OptiStepperTMC2208::ResetCurrentStep()
 {
-	currentStep = 0;
+	SetCurrentStep(0);
+}
+
+void OptiStepperTMC2208::SetCurrentStep(long newStep)
+{
+	currentStep = newStep;
 }
 
 long OptiStepperTMC2208::GetCurrentStep()

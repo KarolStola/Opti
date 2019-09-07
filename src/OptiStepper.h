@@ -15,6 +15,7 @@ public:
     virtual MovementDirection GetMovementDirection() = 0;
     virtual int GetStepPinReadout() = 0;
     virtual void ResetCurrentStep() = 0;
+    virtual void SetCurrentStep(long newStep) = 0;
     virtual long GetCurrentStep() = 0;
 };
 

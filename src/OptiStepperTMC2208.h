@@ -19,6 +19,7 @@ public:
     virtual MovementDirection GetMovementDirection() override;
     virtual int GetStepPinReadout() override;
 	virtual void ResetCurrentStep() override;
+    virtual void SetCurrentStep(long newStep) override;
 	virtual long GetCurrentStep() override;
 	virtual ~OptiStepperTMC2208();
 
