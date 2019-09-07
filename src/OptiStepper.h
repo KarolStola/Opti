@@ -12,6 +12,8 @@ public:
     virtual void StopMoving() = 0;
     virtual bool IsMoving() = 0;
 	virtual void SetMovementDirection(MovementDirection direction) = 0;
+    virtual MovementDirection GetMovementDirection() = 0;
+    virtual int GetStepPinReadout() = 0;
 };
 
 #endif

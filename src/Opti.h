@@ -3,10 +3,6 @@
 #define OPTI_H
 
 #include <Arduino.h>
-#include "OptiStepper.h"
-#include "OptiLed.h"
-#include "OptiBumper.h"
-#include "OptiBluetooth.h"
 #include "MovementDirection.h"
 
 class Opti
@@ -22,10 +18,15 @@ public:
 	void SetLedActive(bool Value);
 	void StartMoving();
 	void StopMoving();
+	void ForceStopMoving();
 	void SetMovementDirection(MovementDirection direction);
+	bool ShouldPerformSafeguardStop();
 	bool RightBorderReached();
 	bool LeftBorderReached();
 	bool IsMoving();
+	bool IsCalibrated();
+	bool IsCalibrating();
+	MovementDirection GetMovementDirection();
 
 protected:
 	inline int GetMotorDriverActivationPin() { return 4; }
@@ -37,12 +38,15 @@ protected:
 	inline int GetRightBumperPin() { return 33; }
 	inline int GetBatteryStatusPin() { return 35; }
 	virtual const std::string & GetDeviceName() = 0; 
-	virtual OptiStepper & GetStepper() = 0;
-	virtual OptiLed & GetLed() = 0;
-	virtual OptiBumper & GetLeftBumper() = 0;
-	virtual OptiBumper & GetRightBumper() = 0;
-	virtual OptiBluetooth & GetBluetooth() = 0;
-	
+	virtual class OptiStepper & GetStepper() = 0;
+	virtual class OptiLed & GetLed() = 0;
+	virtual class OptiBumper & GetLeftBumper() = 0;
+	virtual class OptiBumper & GetRightBumper() = 0;
+	virtual class OptiBluetooth & GetBluetooth() = 0;
+	virtual const std::vector<class OptiCalibrator *> & GetCalibrators() = 0;
+
+private:
+	void UpdateCalibrators();
 };
 
 #endif

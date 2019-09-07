@@ -6,6 +6,7 @@
 #include "OptiStepperTMC2208.h"
 #include "OptiBumper.h"
 #include "OptiBluetooth.h"
+#include "OptiCalibrator.h"
 
 class Opti200 : public Opti
 {
@@ -19,6 +20,8 @@ protected:
 	virtual OptiBumper & GetLeftBumper() override { return leftBumper; }
 	virtual OptiBumper & GetRightBumper() override { return rightBumper; }
 	virtual OptiBluetooth & GetBluetooth() override { return bluetooth; }
+	virtual const std::vector<OptiCalibrator *> & GetCalibrators() override { return calibrators; }
+
 
 private:
 	OptiLed led;
@@ -26,6 +29,9 @@ private:
 	OptiBumper leftBumper;
 	OptiBumper rightBumper;
 	OptiBluetooth bluetooth;
+	OptiCalibrator calibrator;
+
+	const std::vector<OptiCalibrator *> calibrators = { &calibrator };
 };
 
 #endif

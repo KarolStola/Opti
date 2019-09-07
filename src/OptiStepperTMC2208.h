@@ -16,6 +16,8 @@ public:
     virtual void StopMoving() override;
 	void SetMovementDirection(MovementDirection direction) override;
 	virtual bool IsMoving() override;
+    virtual MovementDirection GetMovementDirection() override;
+    virtual int GetStepPinReadout() override;	
 	virtual ~OptiStepperTMC2208();
 
 private:

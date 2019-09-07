@@ -82,11 +82,23 @@ void OptiStepperTMC2208::SetMovementDirection(MovementDirection direction)
 	digitalWrite(stepDirectionPin, GetPinValueForMovementDirection(direction));
 }
 
+MovementDirection OptiStepperTMC2208::GetMovementDirection()
+{
+	auto directionPinValue = digitalRead(stepDirectionPin);
+	auto directionLeftValue = GetPinValueForMovementDirection(MovementDirection::Left);
+	return directionPinValue == directionLeftValue ? MovementDirection::Left : MovementDirection::Right;
+}
+
+
 int  OptiStepperTMC2208::GetPinValueForMovementDirection(MovementDirection direction)
 {
 	return direction == MovementDirection::Left ? LOW : HIGH;
 }
 
+int OptiStepperTMC2208::GetStepPinReadout()
+{
+	return digitalRead(stepPin);
+}
 
 void OptiStepperTMC2208::ActivateDriver()
 {

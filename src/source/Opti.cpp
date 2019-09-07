@@ -1,5 +1,10 @@
 #include <Arduino.h>
 #include "Opti.h"
+#include "OptiStepper.h"
+#include "OptiLed.h"
+#include "OptiBumper.h"
+#include "OptiBluetooth.h"
+#include "OptiCalibrator.h"
 
 void Opti::Initialize()
 {
@@ -12,15 +17,41 @@ void Opti::Initialize()
 
 void Opti::Calibrate()
 {
-
+	for(auto & calibrator : GetCalibrators())
+	{
+		calibrator->Calibrate();
+	}
 }
 
 void Opti::Update()
 {
+	if(ShouldPerformSafeguardStop())
+	{
+		GetStepper().StopMoving();
+	}
+
+	UpdateCalibrators();
 	GetLeftBumper().Update();
 	GetRightBumper().Update();
 	GetStepper().Update();
 	GetBluetooth().Update();
+}
+
+bool Opti::ShouldPerformSafeguardStop()
+{
+	auto movementDirection = GetMovementDirection();
+	auto bumpedLeft = movementDirection == MovementDirection::Left && LeftBorderReached(); 
+	auto bumpedRight = movementDirection == MovementDirection::Right && RightBorderReached(); 
+	return IsMoving() && (bumpedLeft || bumpedRight);
+}
+
+
+void Opti::UpdateCalibrators()
+{
+	for(auto & calibrator : GetCalibrators())
+	{
+		calibrator->Update();
+	}
 }
 
 void Opti::AddBluetoothMessageHandler(class BluetoothMessageHandler * messageHandler)
@@ -36,6 +67,19 @@ void Opti::SendBluetoothMessage(const String & message)
 bool Opti::IsMoving()
 {
 	return GetStepper().IsMoving();
+}
+
+bool Opti::IsCalibrated()
+{
+	for(auto & calibrator : GetCalibrators())
+	{
+		if(!calibrator->IsCalibrated())
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 void Opti::ActivateLed()
@@ -55,17 +99,26 @@ void Opti::SetLedActive(bool value)
 
 void Opti::StartMoving()
 {
-	GetStepper().StartMoving();
+	if(!IsCalibrating() && !ShouldPerformSafeguardStop())
+	{
+		GetStepper().StartMoving();
+	}
 }
 
 void Opti::StopMoving()
 {
-	GetStepper().StopMoving();
+	if(!IsCalibrating())
+	{
+		GetStepper().StopMoving();
+	}
 }
 
 void Opti::SetMovementDirection(MovementDirection direction)
 {
-	GetStepper().SetMovementDirection(direction);
+	if(!IsCalibrating())
+	{
+		GetStepper().SetMovementDirection(direction);
+	}
 }
 
 bool Opti::RightBorderReached()
@@ -77,3 +130,22 @@ bool Opti::LeftBorderReached()
 {
 	return GetLeftBumper().ReachedBorder();
 }
+
+MovementDirection Opti::GetMovementDirection()
+{
+	return GetStepper().GetMovementDirection();
+}
+
+bool Opti::IsCalibrating()
+{
+	for(auto & calibrator : GetCalibrators())
+	{
+		if(calibrator->IsCalibrating())
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
