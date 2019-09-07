@@ -10,6 +10,10 @@ void Opti::Initialize()
 	GetBluetooth().Initialize();
 }
 
+void Opti::Calibrate()
+{
+
+}
 
 void Opti::Update()
 {

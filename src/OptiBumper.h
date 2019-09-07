@@ -11,7 +11,7 @@ public:
 
 private:
     inline int GetBumpValueThreshold() { return 1; }
-    inline unsigned int GetRequiredConsecutiveReadoutCount() { return 10; }
+    inline unsigned int GetRequiredConsecutiveReadoutCount() { return 100; }
     bool IsReadoutSuggestingBump();
 
     int bumperPin;

@@ -13,6 +13,7 @@ class Opti
 {
 public:
 	void Initialize();
+	void Calibrate();
 	void AddBluetoothMessageHandler(class BluetoothMessageHandler * messageHandler);
 	void SendBluetoothMessage(const String & message);
 	void Update();

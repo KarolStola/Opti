@@ -56,7 +56,13 @@ void OptiStepperTMC2208::StepAndDelayNext()
 	if(IsMoving())
 	{
 		digitalWrite(stepPin, !GetStepPinState());
-		auto currentStepDelayedTask = new DelayedMemberTask<OptiStepperTMC2208>(50, this, & OptiStepperTMC2208::StepAndDelayNext);
+		auto currentStepDelayedTask = new DelayedMemberTask<OptiStepperTMC2208>
+		(
+			50,
+			DelayedTaskTimeResolution::Microseconds,
+			this, 
+			& OptiStepperTMC2208::StepAndDelayNext
+		);
 		stepTaskManager.AddDelayedTask(currentStepDelayedTask);
 	}
 }

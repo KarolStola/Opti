@@ -20,8 +20,7 @@ void OptiBumper::Update()
     else
     {
         consecutiveBumpReadouts = 0;
-    }
-    
+    }    
 }
 
 bool OptiBumper::ReachedBorder()
