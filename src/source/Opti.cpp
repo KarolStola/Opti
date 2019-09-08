@@ -212,3 +212,8 @@ void Opti::MoveTo(int motorIndex, long step)
 	GetStepper(motorIndex).MoveTo(step);
 }
 
+int Opti::GetMotorCount()
+{
+	return GetSteppers().size();
+}
+
