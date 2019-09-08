@@ -8,7 +8,8 @@ Opti200::Opti200(HardwareSerial & StepperSerial)
 	, leftBumper(GetLeftBumperPin())
 	, rightBumper(GetRightBumperPin())
 	, bluetooth(GetDeviceName())
-	, calibrator(GetStepper())
+	, calibrator(stepper)
+	, bumperSet(leftBumper, rightBumper)
 {
 }
 

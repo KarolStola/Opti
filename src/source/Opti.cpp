@@ -5,13 +5,21 @@
 #include "OptiBumper.h"
 #include "OptiBluetooth.h"
 #include "OptiCalibrator.h"
+#include "OptiBumperSet.h"
 
 void Opti::Initialize()
 {
-	GetStepper().Initialize();
+	for(auto & stepper : GetSteppers())
+	{
+		stepper->Initialize();
+	}
+
+	for(auto & bumperSet : GetBumperSets())
+	{
+		bumperSet->Initialize();
+	}
+
 	GetLed().Initialize();
-	GetLeftBumper().Initialize();
-	GetRightBumper().Initialize();
 	GetBluetooth().Initialize();
 }
 
@@ -25,24 +33,30 @@ void Opti::Calibrate()
 
 void Opti::Update()
 {
-	if(ShouldPerformSafeguardStop())
-	{
-		GetStepper().StopMoving();
-	}
-
+	CheckForSafeguardStops();
 	UpdateCalibrators();
-	GetLeftBumper().Update();
-	GetRightBumper().Update();
-	GetStepper().Update();
+	UpdateBumpers();
+	UpdateSteppers();
 	GetBluetooth().Update();
 }
 
-bool Opti::ShouldPerformSafeguardStop()
+void Opti::CheckForSafeguardStops()
 {
-	auto movementDirection = GetMovementDirection();
-	auto bumpedLeft = movementDirection == MovementDirection::Left && LeftBorderReached(); 
-	auto bumpedRight = movementDirection == MovementDirection::Right && RightBorderReached(); 
-	return IsMoving() && (bumpedLeft || bumpedRight);
+	for(int i = 0; i < GetSteppers().size(); i++)
+	{
+		if(ShouldPerformSafeguardStop(i))
+		{
+			GetStepper(i).StopMoving();
+		}
+	}
+}
+
+bool Opti::ShouldPerformSafeguardStop(int motorIndex)
+{
+	auto movementDirection = GetMovementDirection(motorIndex);
+	auto bumpedLeft = movementDirection == MovementDirection::Left && LeftBorderReached(motorIndex); 
+	auto bumpedRight = movementDirection == MovementDirection::Right && RightBorderReached(motorIndex); 
+	return IsMoving(motorIndex) && (bumpedLeft || bumpedRight);
 }
 
 
@@ -51,6 +65,22 @@ void Opti::UpdateCalibrators()
 	for(auto & calibrator : GetCalibrators())
 	{
 		calibrator->Update();
+	}
+}
+
+void Opti::UpdateBumpers()
+{
+	for(auto & bumperSet : GetBumperSets())
+	{
+		bumperSet->Update();
+	}
+}
+
+void Opti::UpdateSteppers()
+{
+	for(auto & stepper : GetSteppers())
+	{
+		stepper->Update();
 	}
 }
 
@@ -64,9 +94,9 @@ void Opti::SendBluetoothMessage(const String & message)
 	GetBluetooth().SendMessage(message);
 }
 
-bool Opti::IsMoving()
+bool Opti::IsMoving(int motorIndex)
 {
-	return GetStepper().IsMoving();
+	GetStepper(motorIndex).IsMoving();
 }
 
 bool Opti::IsCalibrated()
@@ -97,48 +127,51 @@ void Opti::SetLedActive(bool value)
 	GetLed().SetActive(value);
 }
 
-void Opti::StartMoving()
+void Opti::StartMoving(int motorIndex)
 {
-	if(!IsCalibrating() && !ShouldPerformSafeguardStop())
+	if(!IsCalibrating() && !ShouldPerformSafeguardStop(motorIndex))
 	{
-		GetStepper().StartMoving();
+		GetStepper(motorIndex).StartMoving();
 	}
 }
 
-void Opti::StopMoving()
+void Opti::StopMovingAll()
 {
 	if(!IsCalibrating())
 	{
-		GetStepper().StopMoving();
+		for(auto & stepper : GetSteppers())
+		{
+			stepper->StopMoving();
+		}
 	}
 }
 
 void Opti::StopMoving(int motorIndex)
 {
-	StopMoving();
+	GetStepper(motorIndex).StopMoving();
 }
 
-void Opti::SetMovementDirection(MovementDirection direction)
+void Opti::SetMovementDirection(int motorIndex, MovementDirection direction)
 {
 	if(!IsCalibrating())
 	{
-		GetStepper().SetMovementDirection(direction);
+		GetStepper(motorIndex).SetMovementDirection(direction);
 	}
 }
 
-bool Opti::RightBorderReached()
+bool Opti::RightBorderReached(int motorIndex)
 {
-	return GetRightBumper().ReachedBorder();
+	return GetRightBumper(motorIndex).ReachedBorder();
 }
 
-bool Opti::LeftBorderReached()
+bool Opti::LeftBorderReached(int motorIndex)
 {
-	return GetLeftBumper().ReachedBorder();
+	return GetLeftBumper(motorIndex).ReachedBorder();
 }
 
-MovementDirection Opti::GetMovementDirection()
+MovementDirection Opti::GetMovementDirection(int motorIndex)
 {
-	return GetStepper().GetMovementDirection();
+	return GetStepper(motorIndex).GetMovementDirection();
 }
 
 bool Opti::IsCalibrating()
@@ -154,33 +187,28 @@ bool Opti::IsCalibrating()
 	return false;
 }
 
-long Opti::GetCurrentStep()
-{
-	return GetStepper().GetCurrentStep();
-}
-
 long Opti::GetCurrentStep(int motorIndex)
 {
-	return GetCurrentStep();
+	return GetStepper(motorIndex).GetCurrentStep();
 }
 
 void Opti::ResetCurrentStep(int motorIndex)
 {
-	GetStepper().ResetCurrentStep();
+	GetStepper(motorIndex).ResetCurrentStep();
 }
 
 void Opti::SetCurrentStep(int motorIndex, long currentStep)
 {
-	GetStepper().SetCurrentStep(currentStep);
+	GetStepper(motorIndex).SetCurrentStep(currentStep);
 }
 
 void Opti::SetStepsPerSecond(int motorIndex, float stepsPerSecond)
 {
-	GetStepper().SetStepsPerSecond(stepsPerSecond);
+	GetStepper(motorIndex).SetStepsPerSecond(stepsPerSecond);
 }
 
 void Opti::MoveTo(int motorIndex, long step)
 {
-	GetStepper().MoveTo(step);
+	GetStepper(motorIndex).MoveTo(step);
 }
 
