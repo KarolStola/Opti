@@ -1,7 +1,5 @@
 #include <Arduino.h>
 #include <HardwareSerial.h>
-#include <DelayedMemberTask.h>
-#include <DelayedTaskManager.h>
 #include "OptiStepperTMC2208.h"
 
 OptiStepperTMC2208::OptiStepperTMC2208(int driverActivationPin, int stepPin, int stepDirectionPin, HardwareSerial & serial, int baudRate)
@@ -11,6 +9,7 @@ OptiStepperTMC2208::OptiStepperTMC2208(int driverActivationPin, int stepPin, int
 	, baudRate(baudRate)
 	, serial(serial)
 	, driver(TMC2208Stepper(&serial))
+	, nextStepDelayedTask(DelayedTaskTimeResolution::Microseconds, this, & OptiStepperTMC2208::StepAndDelayNext)
 {
 }
 
@@ -38,7 +37,7 @@ void OptiStepperTMC2208::Update()
 	{
 		StopMoving();
 	}
-	stepTaskManager.Update();
+	nextStepDelayedTask.Update();
 }
 
 bool OptiStepperTMC2208::IsMoving()
@@ -77,22 +76,14 @@ void OptiStepperTMC2208::IncrementCurrentStep()
 
 void OptiStepperTMC2208::DelayNextStep()
 {
-	auto currentStepDelayedTask = new DelayedMemberTask<OptiStepperTMC2208>
-	(
-		microsecondsBetweenSteps,
-		DelayedTaskTimeResolution::Microseconds,
-		this, 
-		& OptiStepperTMC2208::StepAndDelayNext
-	);
-	
-	stepTaskManager.AddDelayedTask(currentStepDelayedTask);
+	nextStepDelayedTask.Delay(microsecondsBetweenSteps);
 }
 
 void OptiStepperTMC2208::StopMoving()
 {
 	InvalidateDestination();
 	DeactivateDriver();
-	stepTaskManager.Clear();
+	nextStepDelayedTask.Cancel();
 }
 
 void OptiStepperTMC2208::SetMovementDirection(MovementDirection direction)

@@ -2,7 +2,6 @@
 #define OPTI_STEPPER_TMC2208_H
 
 #include <TMC2208Stepper.h>
-#include <DelayedTaskManager.h>
 #include <DelayedMemberTask.h>
 #include "OptiStepper.h"
 
@@ -51,7 +50,7 @@ private:
 	const int baudRate;
 	HardwareSerial & serial;
 	TMC2208Stepper driver;
-	DelayedTaskManager stepTaskManager;
+	DelayedMemberTask<OptiStepperTMC2208> nextStepDelayedTask;
 	long currentStep = 0;
 	float microsecondsBetweenSteps = 50.f;
 	long destination = invalidDestination;
