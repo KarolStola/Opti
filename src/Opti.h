@@ -11,6 +11,7 @@ class Opti
 public:
 	void Initialize();
 	void Calibrate();
+	void SetBluetoothMessageDelimiter(char delimiter);
 	void AddBluetoothMessageHandler(class BluetoothMessageHandler * messageHandler);
 	void SendBluetoothMessage(const String & message);
 	void Update();

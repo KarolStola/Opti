@@ -15,7 +15,15 @@ void OptiBluetooth::Update()
 {
   	if (bluetoothSerial.available())
 	{
-	    auto message = bluetoothSerial.readString();
+	    String message; 
+		if(messageDelimiter == invalidDelimiter)
+		{
+			message = bluetoothSerial.readString(); 
+		}
+		else
+		{
+			message = bluetoothSerial.readStringUntil(messageDelimiter);	
+		}
 		HandleMessage(message);
   	}
 }
@@ -29,6 +37,11 @@ void OptiBluetooth::SendMessage(const String & message)
 {
 	auto messagePointer = (const uint8_t *) message.c_str();
 	bluetoothSerial.write(messagePointer, message.length());
+}
+
+void OptiBluetooth::SetMessageDelimiter(char newDelimiter)
+{
+	messageDelimiter = newDelimiter;
 }
 
 void OptiBluetooth::HandleMessage(const String & message)

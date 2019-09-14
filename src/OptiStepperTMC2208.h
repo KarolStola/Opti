@@ -13,7 +13,7 @@ public:
     virtual void Update() override;
 	virtual void StartMoving() override;
     virtual void StopMoving() override;
-	void SetMovementDirection(MovementDirection direction) override;
+	virtual void SetMovementDirection(MovementDirection direction) override;
 	virtual bool IsMoving() override;
     virtual MovementDirection GetMovementDirection() override;
     virtual int GetStepPinReadout() override;

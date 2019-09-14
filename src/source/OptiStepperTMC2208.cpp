@@ -1,3 +1,5 @@
+#define DEBUG_LOG 0
+
 #include <Arduino.h>
 #include <HardwareSerial.h>
 #include "OptiStepperTMC2208.h"

@@ -31,6 +31,12 @@ void Opti::Calibrate()
 	}
 }
 
+void Opti::SetBluetoothMessageDelimiter(char delimiter)
+{
+	GetBluetooth().SetMessageDelimiter(delimiter);
+}
+
+
 void Opti::Update()
 {
 	CheckForSafeguardStops();
@@ -96,7 +102,7 @@ void Opti::SendBluetoothMessage(const String & message)
 
 bool Opti::IsMoving(int motorIndex)
 {
-	GetStepper(motorIndex).IsMoving();
+	return GetStepper(motorIndex).IsMoving();
 }
 
 bool Opti::IsCalibrated()
