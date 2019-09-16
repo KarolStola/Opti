@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "OptiBumperSet.h"
 #include "OptiBumper.h"
 
@@ -16,5 +17,6 @@ void OptiBumperSet::Update()
 void OptiBumperSet::Initialize()
 {
     leftBumper.Initialize();
+    delayMicroseconds(500);
     rightBumper.Initialize();
 }

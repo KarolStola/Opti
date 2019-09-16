@@ -58,6 +58,7 @@ protected:
 
 private:
 	bool ShouldPerformSafeguardStop(int motorIndex);
+	bool IsAtTheBorderTowards(int motorIndex, MovementDirection direction);
 	void CheckForSafeguardStops();
 	void UpdateCalibrators();
 	void UpdateBumpers();

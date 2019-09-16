@@ -11,7 +11,7 @@ OptiStepperTMC2208::OptiStepperTMC2208(int driverActivationPin, int stepPin, int
 	, baudRate(baudRate)
 	, serial(serial)
 	, driver(TMC2208Stepper(&serial))
-	, nextStepDelayedTask(DelayedTaskTimeResolution::Microseconds, this, & OptiStepperTMC2208::StepAndDelayNext)
+	, stepDelayedTask(DelayedTaskTimeResolution::Microseconds, this, & OptiStepperTMC2208::TryStepping)
 {
 }
 
@@ -39,7 +39,7 @@ void OptiStepperTMC2208::Update()
 	{
 		StopMoving();
 	}
-	nextStepDelayedTask.Update();
+	stepDelayedTask.Update();
 }
 
 bool OptiStepperTMC2208::IsMoving()
@@ -52,16 +52,15 @@ void OptiStepperTMC2208::StartMoving()
 	if(!IsMoving())
 	{
 		ActivateDriver();
-		StepAndDelayNext();
+		stepDelayedTask.Loop(microsecondsBetweenSteps);
 	}
 }
 
-void OptiStepperTMC2208::StepAndDelayNext()
+void OptiStepperTMC2208::TryStepping()
 {
 	if(IsMoving())
 	{
 		PerformStep();
-		DelayNextStep();	
 	}
 }
 
@@ -76,16 +75,11 @@ void OptiStepperTMC2208::IncrementCurrentStep()
 	currentStep += GetMovementDirection() == MovementDirection::Right ? 1 : -1;
 } 
 
-void OptiStepperTMC2208::DelayNextStep()
-{
-	nextStepDelayedTask.Delay(microsecondsBetweenSteps);
-}
-
 void OptiStepperTMC2208::StopMoving()
 {
 	InvalidateDestination();
 	DeactivateDriver();
-	nextStepDelayedTask.Cancel();
+	stepDelayedTask.Cancel();
 }
 
 void OptiStepperTMC2208::SetMovementDirection(MovementDirection direction)
@@ -178,8 +172,13 @@ void OptiStepperTMC2208::MoveTo(long step)
 
 void OptiStepperTMC2208::SetMovementDirectionTowards(long step)
 {
-	auto direction = step < GetCurrentStep() ? MovementDirection::Left : MovementDirection::Right;
+	auto direction = GetMovementDirectionTowards(step);
 	SetMovementDirection(direction);
+}
+
+MovementDirection OptiStepperTMC2208::GetMovementDirectionTowards(long step)
+{
+	return step < GetCurrentStep() ? MovementDirection::Left : MovementDirection::Right;
 }
 
 bool OptiStepperTMC2208::IsAtDestination()

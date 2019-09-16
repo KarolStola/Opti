@@ -60,9 +60,25 @@ void Opti::CheckForSafeguardStops()
 bool Opti::ShouldPerformSafeguardStop(int motorIndex)
 {
 	auto movementDirection = GetMovementDirection(motorIndex);
-	auto bumpedLeft = movementDirection == MovementDirection::Left && LeftBorderReached(motorIndex); 
-	auto bumpedRight = movementDirection == MovementDirection::Right && RightBorderReached(motorIndex); 
-	return IsMoving(motorIndex) && (bumpedLeft || bumpedRight);
+	auto isAtTheBorder = IsAtTheBorderTowards(motorIndex, movementDirection);
+	return IsMoving(motorIndex) && isAtTheBorder;
+}
+
+bool Opti::IsAtTheBorderTowards(int motorIndex, MovementDirection direction)
+{
+	if(direction == MovementDirection::Left)
+	{
+		return LeftBorderReached(motorIndex);
+	}
+	else if(direction == MovementDirection::Right)
+	{
+		return RightBorderReached(motorIndex);
+	}
+	else
+	{
+		return false;
+	}
+	
 }
 
 
@@ -215,7 +231,11 @@ void Opti::SetStepsPerSecond(int motorIndex, float stepsPerSecond)
 
 void Opti::MoveTo(int motorIndex, long step)
 {
-	GetStepper(motorIndex).MoveTo(step);
+	auto movementDirection = GetStepper(motorIndex).GetMovementDirectionTowards(step);
+	if(!IsAtTheBorderTowards(motorIndex, movementDirection))
+	{
+		GetStepper(motorIndex).MoveTo(step);
+	}
 }
 
 int Opti::GetMotorCount()

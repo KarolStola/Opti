@@ -1,6 +1,8 @@
 #ifndef OPTI_BUMPER_H
 #define OPTI_BUMPER_H
 
+#include <DelayedMemberTask.h>
+
 class OptiBumper
 {
 public:
@@ -13,9 +15,12 @@ private:
     inline int GetBumpValueThreshold() { return 1; }
     inline unsigned int GetRequiredConsecutiveReadoutCount() { return 100; }
     bool IsReadoutSuggestingBump();
+    void MakeReadoutAndDelayNext();
 
     int bumperPin;
-    unsigned int consecutiveBumpReadouts = 0;
+    int readoutTug = 0;
+    int delayBetweenReadouts = 1000;
+    DelayedMemberTask<OptiBumper> readoutDelayedTask;
 };
 
 #endif

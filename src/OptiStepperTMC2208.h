@@ -16,6 +16,7 @@ public:
 	virtual void SetMovementDirection(MovementDirection direction) override;
 	virtual bool IsMoving() override;
     virtual MovementDirection GetMovementDirection() override;
+    virtual MovementDirection GetMovementDirectionTowards(long step) override;
     virtual int GetStepPinReadout() override;
 	virtual void ResetCurrentStep() override;
     virtual void SetCurrentStep(long newStep) override;
@@ -27,7 +28,6 @@ public:
 private:
 	void PerformStep();
 	void IncrementCurrentStep();
-	void DelayNextStep(); 
 	void ActivateDriver();
 	void DeactivateDriver();
 	void SetDriverActive(bool value);
@@ -35,7 +35,7 @@ private:
 	bool GetStepPinState();
 	bool IsDriverActive();
 	int GetDriverActivationValue(bool value);
-	void StepAndDelayNext();
+	void TryStepping();
 	int GetPinValueForMovementDirection(MovementDirection MovementDirection);
 	void Cleanup();
 	bool HasValidDestination();
@@ -50,7 +50,7 @@ private:
 	const int baudRate;
 	HardwareSerial & serial;
 	TMC2208Stepper driver;
-	DelayedMemberTask<OptiStepperTMC2208> nextStepDelayedTask;
+	DelayedMemberTask<OptiStepperTMC2208> stepDelayedTask;
 	long currentStep = 0;
 	float microsecondsBetweenSteps = 50.f;
 	long destination = invalidDestination;

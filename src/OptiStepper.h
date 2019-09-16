@@ -13,6 +13,7 @@ public:
     virtual bool IsMoving() = 0;
 	virtual void SetMovementDirection(MovementDirection direction) = 0;
     virtual MovementDirection GetMovementDirection() = 0;
+    virtual MovementDirection GetMovementDirectionTowards(long step) = 0;
     virtual int GetStepPinReadout() = 0;
     virtual void ResetCurrentStep() = 0;
     virtual void SetCurrentStep(long newStep) = 0;
