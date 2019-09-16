@@ -61,7 +61,6 @@ private:
 	bool IsAtTheBorderTowards(int motorIndex, MovementDirection direction);
 	void CheckForSafeguardStops();
 	void UpdateCalibrators();
-	void UpdateBumpers();
 	void UpdateSteppers();
 };
 

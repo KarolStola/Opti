@@ -41,7 +41,6 @@ void Opti::Update()
 {
 	CheckForSafeguardStops();
 	UpdateCalibrators();
-	UpdateBumpers();
 	UpdateSteppers();
 	GetBluetooth().Update();
 }
@@ -78,7 +77,6 @@ bool Opti::IsAtTheBorderTowards(int motorIndex, MovementDirection direction)
 	{
 		return false;
 	}
-	
 }
 
 
@@ -87,14 +85,6 @@ void Opti::UpdateCalibrators()
 	for(auto & calibrator : GetCalibrators())
 	{
 		calibrator->Update();
-	}
-}
-
-void Opti::UpdateBumpers()
-{
-	for(auto & bumperSet : GetBumperSets())
-	{
-		bumperSet->Update();
 	}
 }
 

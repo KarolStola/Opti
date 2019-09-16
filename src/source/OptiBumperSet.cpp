@@ -8,15 +8,8 @@ OptiBumperSet::OptiBumperSet(OptiBumper & leftBumper, OptiBumper & rightBumper)
 {
 }
 
-void OptiBumperSet::Update()
-{
-    leftBumper.Update();
-    rightBumper.Update();
-}
-
 void OptiBumperSet::Initialize()
 {
     leftBumper.Initialize();
-    delayMicroseconds(500);
     rightBumper.Initialize();
 }
