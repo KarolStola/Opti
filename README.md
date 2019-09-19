@@ -16,11 +16,11 @@ https://github.com/espressif/arduino-esp32/blob/master/docs/arduino-ide/boards_m
 3. Install prerequisite library:
     * https://github.com/KarolStola/DelayedTasks
 
-3. Under the `Tools` dropdown, setup the following:\
+4. Clone the repository to your sketchbook library location. The path can be set/viewed in ```File > Preferences > Settings```. Put the library in the ```libraries``` folder.
+
+5. Under the `Tools` dropdown, setup the following:\
 ![settings](ReadmeImages/Settings.png)
 > Note: There have been problems reported about uploading at higher speeds. You can use them if it works for you.
-
-5. Clone the repository to your sketchbook library location. The path can be set/viewed in ```File > Preferences > Settings```. Put the library in the ```libraries``` folder.
 
 ## Minimal Usage Example
 ```
